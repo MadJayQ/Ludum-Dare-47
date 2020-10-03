@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace KinematicCharacterController
@@ -15,7 +16,8 @@ namespace KinematicCharacterController
     /// The system that manages the simulation of KinematicCharacterMotor and PhysicsMover
     /// </summary>
     [DefaultExecutionOrder(-100)]
-    public class KinematicCharacterSystem : MonoBehaviour
+    [SingletonTag(rootObject:"Core System Objects")]
+    public class KinematicCharacterSystem : MonoSingleton<KinematicCharacterSystem>
     {
         private static KinematicCharacterSystem _instance;
 
@@ -78,13 +80,9 @@ namespace KinematicCharacterController
         /// </summary>
         public static void EnsureCreation()
         {
-            if (_instance == null)
+            if(Instance == null)
             {
-                GameObject systemGameObject = new GameObject("KinematicCharacterSystem");
-                _instance = systemGameObject.AddComponent<KinematicCharacterSystem>();
-
-                systemGameObject.hideFlags = HideFlags.NotEditable;
-                _instance.hideFlags = HideFlags.NotEditable;
+                Debug.Assert(false, "WTF");
             }
         }
 

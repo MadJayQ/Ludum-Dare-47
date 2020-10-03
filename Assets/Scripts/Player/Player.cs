@@ -22,9 +22,10 @@ public class Player : MonoBehaviour
 
     public void Update()
     {
-        if(DebugView.Instance) { }
         PollInput();
+
         SetPlayerRotation();
+        SetPlayerVelocity();
     }
 
     private void PollInput()
@@ -32,13 +33,21 @@ public class Player : MonoBehaviour
         input.MousePosition = Input.mousePosition;
     }
 
+    private void SetPlayerVelocity()
+    {
+        float inputX = Input.GetAxis("Horizontal");
+        float inputY = Input.GetAxis("Vertical");
+        characterController.MoveInputVector = new Vector3(inputX, 0, inputY);
+    }
+
     private void SetPlayerRotation()
     {
         //First we calculate what the current mouses world position would be
-        Vector3 mouseWorldPosition = CalculateMouseWorldPosition(mainCamera.nearClipPlane);
+        Vector3 mouseWorldPosition = CalculateMouseWorldPosition(mainCamera.nearClipPlane, characterController.Origin);
 #if UNITY_EDITOR
         debugMouseWorldPosition = mouseWorldPosition;
 #endif
+        characterController.LookAt(mouseWorldPosition);
 
     }
 #if UNITY_EDITOR
@@ -51,10 +60,10 @@ public class Player : MonoBehaviour
         }
     }
 #endif
-    private Vector3 CalculateMouseWorldPosition(float z)
+    private Vector3 CalculateMouseWorldPosition(float z, Vector3 focusPosition)
     {
         Ray ray = mainCamera.ScreenPointToRay(input.MousePosition);
-        Plane xy = new Plane(Vector3.up, new Vector3(0, 0, z));
+        Plane xy = new Plane(Vector3.up, new Vector3(focusPosition.x, focusPosition.y, z));
         float distance;
         xy.Raycast(ray, out distance);
         return ray.GetPoint(distance);
