@@ -10,7 +10,7 @@ public class RockScript : MonoBehaviour
     MeshRenderer rockMesh = GameObject.Find("Rock1").GetComponent<MeshRenderer>();
     BoxCollider rockCollider = GameObject.Find("Rock1").GetComponent<BoxCollider>();
     GameObject rock = GameObject.Find("Rock1");
-    Player player = GameObject.Find("Player"); // get the player gameobject so we can drop the rock whereever the player is standing
+    GameObject player = GameObject.Find("Player"); // get the player gameobject so we can drop the rock whereever the player is standing
 
 
     private void Update()
