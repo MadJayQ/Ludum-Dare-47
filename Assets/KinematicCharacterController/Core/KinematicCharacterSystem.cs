@@ -32,7 +32,7 @@ namespace KinematicCharacterController
         /// If true, the simulation is done on FixedUpdate
         /// </summary>
         public static bool AutoSimulation = true;
-        
+
         private static float _lastCustomInterpolationStartTime = -1f;
         private static float _lastCustomInterpolationDeltaTime = -1f;
 
@@ -51,7 +51,7 @@ namespace KinematicCharacterController
         {
             get
             {
-                return _internalInterpolationMethod; 
+                return _internalInterpolationMethod;
             }
             set
             {
@@ -103,7 +103,7 @@ namespace KinematicCharacterController
         /// <param name="capacity"></param>
         public static void SetCharacterMotorsCapacity(int capacity)
         {
-            if(capacity < CharacterMotors.Count)
+            if (capacity < CharacterMotors.Count)
             {
                 capacity = CharacterMotors.Count;
             }
@@ -116,7 +116,7 @@ namespace KinematicCharacterController
         public static void RegisterCharacterMotor(KinematicCharacterMotor motor)
         {
             CharacterMotors.Add(motor);
-            
+
             RigidbodyInterpolation interpMethod = (_internalInterpolationMethod == CharacterSystemInterpolationMethod.Unity) ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
             motor.Rigidbody.interpolation = interpMethod;
         }
@@ -177,7 +177,7 @@ namespace KinematicCharacterController
             if (AutoSimulation)
             {
                 float deltaTime = Time.deltaTime;
-                
+
                 PreSimulationUpdate(deltaTime);
                 Simulate(deltaTime);
                 PostSimulationUpdate(deltaTime);
@@ -201,48 +201,30 @@ namespace KinematicCharacterController
             for (int i = 0; i < PhysicsMovers.Count; i++)
             {
                 var Mover = PhysicsMovers[i];
-                if(Mover.GetType() == typeof(TimePhysicsMover)) {
-                    PhysicsMovers[i].VelocityUpdate(deltaTime * ((TimePhysicsMover)Mover).TimeRate);
-                } else {
-                    PhysicsMovers[i].VelocityUpdate(deltaTime);
-                }
+                PhysicsMovers[i].VelocityUpdate(deltaTime);
             }
 
             // Character controller update phase 1
             for (int i = 0; i < CharacterMotors.Count; i++)
             {
                 var Motor = CharacterMotors[i];
-                if(Motor.GetType() == typeof(TimeKinematicCharacterMotor)) {
-                    Motor.UpdatePhase1(deltaTime * ((TimeKinematicCharacterMotor)(Motor)).TimeRate);
-                } else {
-                    Motor.UpdatePhase1(deltaTime);
-                }
+                Motor.UpdatePhase1(deltaTime);
             }
 
             // Simulate PhysicsMover displacement
             for (int i = 0; i < PhysicsMovers.Count; i++)
-            {               
+            {
                 var Mover = PhysicsMovers[i];
-                if(Mover.GetType() == typeof(TimePhysicsMover)) {
-                    PhysicsMovers[i].Transform.SetPositionAndRotation(PhysicsMovers[i].TransientPosition, PhysicsMovers[i].TransientRotation);
-                    PhysicsMovers[i].Rigidbody.position = PhysicsMovers[i].TransientPosition;
-                    PhysicsMovers[i].Rigidbody.rotation = PhysicsMovers[i].TransientRotation;
-                } else {
-                    PhysicsMovers[i].Transform.SetPositionAndRotation(PhysicsMovers[i].TransientPosition, PhysicsMovers[i].TransientRotation);
-                    PhysicsMovers[i].Rigidbody.position = PhysicsMovers[i].TransientPosition;
-                    PhysicsMovers[i].Rigidbody.rotation = PhysicsMovers[i].TransientRotation;
-                }
+                PhysicsMovers[i].Transform.SetPositionAndRotation(PhysicsMovers[i].TransientPosition, PhysicsMovers[i].TransientRotation);
+                PhysicsMovers[i].Rigidbody.position = PhysicsMovers[i].TransientPosition;
+                PhysicsMovers[i].Rigidbody.rotation = PhysicsMovers[i].TransientRotation;
             }
 
             // Character controller update phase 2 and move
             for (int i = 0; i < CharacterMotors.Count; i++)
             {
                 var Motor = CharacterMotors[i];
-                if(Motor.GetType() == typeof(TimeKinematicCharacterMotor)) {
-                    Motor.UpdatePhase2(deltaTime * ((TimeKinematicCharacterMotor)(Motor)).TimeRate);
-                } else {
-                    Motor.UpdatePhase2(deltaTime);
-                }
+                Motor.UpdatePhase2(deltaTime);
                 CharacterMotors[i].Transform.SetPositionAndRotation(CharacterMotors[i].TransientPosition, CharacterMotors[i].TransientRotation);
                 CharacterMotors[i].Rigidbody.position = CharacterMotors[i].TransientPosition;
                 CharacterMotors[i].Rigidbody.rotation = CharacterMotors[i].TransientRotation;
@@ -384,20 +366,9 @@ namespace KinematicCharacterController
             for (int i = 0; i < PhysicsMovers.Count; i++)
             {
                 var Mover = PhysicsMovers[i];
-                bool reset = false;
-                if(Mover.GetType() == typeof(TimePhysicsMover)) {
-                    //Try to recalculate the interpolation
-                    TimePhysicsMover timeMover = Mover as TimePhysicsMover;
-                    //Debug.Log(interpolationFactor);
-                    //interpolationFactor = 1 - Mathf.Exp(-50 * Time.deltaTime);
-                    reset = true;
-                }
                 PhysicsMovers[i].Transform.SetPositionAndRotation(
                     Vector3.Lerp(PhysicsMovers[i].InitialTickPosition, PhysicsMovers[i].TransientPosition, interpolationFactor),
                     Quaternion.Slerp(PhysicsMovers[i].InitialTickRotation, PhysicsMovers[i].TransientRotation, interpolationFactor));
-                if(reset) { //Restore the interpolation factor for the subsequent physics movers
-                    interpolationFactor = lastInterpolationFactor;
-                }
             }
         }
     }
