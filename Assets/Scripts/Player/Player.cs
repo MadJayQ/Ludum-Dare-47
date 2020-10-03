@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            CreatePlayerClone();
+            //CreatePlayerClone();
         }
     }
 
@@ -72,13 +72,13 @@ public class Player : MonoBehaviour
 
     }
 
-    private void CreatePlayerClone()
+    /*private void CreatePlayerClone()
     {
         PlayerCloneState cloneState = new PlayerCloneState(this);
         CloneSystem.Instance.CreateClone(cloneState);
         Administrator.Instance.RespawnPlayer();
     }
-
+    */
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
