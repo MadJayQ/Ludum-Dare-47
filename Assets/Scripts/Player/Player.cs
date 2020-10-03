@@ -13,6 +13,17 @@ public class Player : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private CharacterController characterController;
 
+    //Readonly access for the character controller for our player
+    public CharacterController Controller => characterController;
+
+    public MeshFilter MeshFilter 
+    { 
+        get 
+        {
+            return Controller.GetComponent<MeshFilter>();
+        } 
+    }
+
     private PlayerInput input = new PlayerInput();
 
 #if UNITY_EDITOR
@@ -20,12 +31,22 @@ public class Player : MonoBehaviour
     Vector3 debugMouseWorldPosition;
 #endif
 
+    public void Possess(CharacterController controller)
+    {
+        characterController = controller;
+    }
+
     public void Update()
     {
         PollInput();
 
         SetPlayerRotation();
         SetPlayerVelocity();
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            CreatePlayerClone();
+        }
     }
 
     private void PollInput()
@@ -50,8 +71,16 @@ public class Player : MonoBehaviour
         characterController.LookAt(mouseWorldPosition);
 
     }
+
+    private void CreatePlayerClone()
+    {
+        PlayerCloneState cloneState = new PlayerCloneState(this);
+        CloneSystem.Instance.CreateClone(cloneState);
+        Administrator.Instance.RespawnPlayer();
+    }
+
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         if(drawDebugInformation)
         {

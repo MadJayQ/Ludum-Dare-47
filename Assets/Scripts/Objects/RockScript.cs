@@ -51,7 +51,7 @@ public class RockScript : MonoBehaviour
     private void PickUp() // pick rock the if in range
     {
         
-        if (/* do the calculation if the player is in range and hovering rock*/) 
+        if (true/* do the calculation if the player is in range and hovering rock*/) 
         {
             rock.GetComponent<Rigidbody>().useGravity = false;
             

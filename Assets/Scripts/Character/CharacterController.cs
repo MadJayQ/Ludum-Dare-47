@@ -80,6 +80,8 @@ public class CharacterController : BaseCharacterController
         {
             Rotation = newRotation.Value;
         }
+
+        Motor.SetPositionAndRotation(Origin, Rotation);
     }
 
     public override void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
