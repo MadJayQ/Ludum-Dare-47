@@ -37,22 +37,26 @@ public class Administrator : MonoSingleton<Administrator>
         player.Possess(playerController);
         player.enabled = true;
         RespawnPlayer();
-
         //Setup camera
         mainCamera.Follow = playerController.transform;
+        //Set gamestate
+        currentGameState = GameStateProvider.GetCurrentGameState();
     }
 
     void Update()
     {
-        Debug.Assert(currentGameState != null, "There is no supplied gamestate you dolt");
-        if(currentGameState.GameStateSatisfied())
+        if (currentGameState != null)
         {
-            RoomCompleted();
+            if (currentGameState.GameStateSatisfied())
+            {
+                RoomCompleted();
+            }
         }
     }
 
     private void RoomCompleted()
     {
-
+        OnDoorOpen.Invoke(currentDoorIndex++);
+        currentGameState = GameStateProvider.GetCurrentGameState(); //Store the new current gamestate
     }
 }

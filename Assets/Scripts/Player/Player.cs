@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
     public void Possess(CharacterController controller)
     {
         characterController = controller;
+        controller.TriggerEnterEvent.AddListener(OnPlayerTriggerEntered);
+        controller.TriggerExitEvent.AddListener(OnPlayerTriggerExited);
     }
 
     public void Update()
@@ -47,16 +49,26 @@ public class Player : MonoBehaviour
 
         SetPlayerRotation();
         SetPlayerVelocity();
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            CreatePlayerClone();
-        }
     }
 
     private void PollInput()
     {
         input.MousePosition = Input.mousePosition;
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            CreatePlayerClone();
+        }
+
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            PlayerInteract();
+        }
+    }
+
+    private void PlayerInteract()
+    {
+        OnPlayerInteract.Invoke();
     }
 
     private void SetPlayerVelocity()
@@ -84,9 +96,14 @@ public class Player : MonoBehaviour
         Administrator.Instance.RespawnPlayer();
     }
 
-    private void OnPlayerTriggerEntry(Collider otherTrigger)
+    private void OnPlayerTriggerEntered(BaseTrigger trigger)
     {
+        trigger.OnTriggered();
+    }
 
+    private void OnPlayerTriggerExited(BaseTrigger trigger)
+    {
+        trigger.TriggerDeactivated();
     }
 
 #if UNITY_EDITOR

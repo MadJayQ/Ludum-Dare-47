@@ -14,6 +14,7 @@ public struct CharacterControllerInputs
 }
 
 public class OnTriggerEnterEvent : UnityEvent<BaseTrigger> { }
+public class OnTriggerExitEvent : UnityEvent<BaseTrigger> { }
 
 public class CharacterController : BaseCharacterController
 {
@@ -23,6 +24,7 @@ public class CharacterController : BaseCharacterController
     public Vector3 MoveInputVector { get; set; }
 
     public OnTriggerEnterEvent TriggerEnterEvent = new OnTriggerEnterEvent();
+    public OnTriggerExitEvent TriggerExitEvent = new OnTriggerExitEvent();
 
     [Header("Game Movement")]
     public float MaxMoveSpeedStable;
@@ -60,6 +62,15 @@ public class CharacterController : BaseCharacterController
         if(trigger != null)
         {
             TriggerEnterEvent.Invoke(trigger);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        BaseTrigger trigger = other.gameObject.GetComponent<BaseTrigger>();
+        if(trigger != null)
+        {
+            TriggerExitEvent.Invoke(trigger);
         }
     }
 

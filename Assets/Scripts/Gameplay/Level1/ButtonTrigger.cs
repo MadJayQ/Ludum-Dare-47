@@ -7,4 +7,8 @@ public class ButtonTrigger : BaseTrigger
     {
 
     }
+    public override void TriggerDeactivated()
+    {
+
+    }
 }

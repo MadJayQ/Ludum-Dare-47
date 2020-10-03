@@ -5,18 +5,21 @@ using UnityEngine;
 
 public class EntryDoorTrigger : BaseTrigger
 {
+    [SerializeField] private EntryRoomGameState entryRoomState;
+
     public override void OnTriggered()
     {
-        Administrator.Instance.Player.OnPlayerInteract.AddListener(OnPlayerInteract);
+        if (entryRoomState.enabled)
+        {
+            entryRoomState.TriggerStateChanged(true);
+        }
     }
 
     public override void TriggerDeactivated()
     {
-        Administrator.Instance.Player.OnPlayerInteract.RemoveListener(OnPlayerInteract);
-    }
-
-    private void OnPlayerInteract()
-    {
-
+        if (entryRoomState.enabled)
+        {
+            entryRoomState.TriggerStateChanged(false);
+        }
     }
 }
