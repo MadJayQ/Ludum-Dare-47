@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 public class LevelOneState : BaseGameState
 {
-    public bool TriggerOneActive = false;
-    public bool TriggerTwoActive = false;
-
+    public List<bool> Triggers = new List<bool>();
     public override bool GameStateSatisfied()
     {
-        return TriggerOneActive && TriggerTwoActive;
+        bool allTriggersEnabled = true;
+        for(int i = 0; i < Triggers.Count; i++)
+        {
+            if(Triggers[i] != true)
+            {
+                allTriggersEnabled = false;
+                break;
+            }
+        }
+        return allTriggersEnabled;
     }
 }

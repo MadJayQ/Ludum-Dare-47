@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d5ddac5fb4dfb042878dd2bf62ca67f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxMoveSpeedStable: 200
+  MaxMoveSpeedStable: 350
   MoveSpeedSharpnessStable: 1.5
   Gravity: {x: 0, y: -100, z: 0}
 --- !u!1 &262768246438137497
