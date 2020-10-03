@@ -1,12 +1,15 @@
 ﻿using System;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Events;
 
 public struct PlayerInput
 {
     public Vector3 MousePosition;
     //Buttons pressed
 }
+
+public class PlayerInteractEvent : UnityEvent { }
 
 public class Player : MonoBehaviour
 {
@@ -25,6 +28,8 @@ public class Player : MonoBehaviour
     }
 
     private PlayerInput input = new PlayerInput();
+
+    public PlayerInteractEvent OnPlayerInteract = new PlayerInteractEvent();
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawDebugInformation;
@@ -77,6 +82,11 @@ public class Player : MonoBehaviour
         PlayerCloneState cloneState = new PlayerCloneState(this);
         CloneSystem.Instance.CreateClone(cloneState);
         Administrator.Instance.RespawnPlayer();
+    }
+
+    private void OnPlayerTriggerEntry(Collider otherTrigger)
+    {
+
     }
 
 #if UNITY_EDITOR

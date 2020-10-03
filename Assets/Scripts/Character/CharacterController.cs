@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using KinematicCharacterController;
+using UnityEngine.Events;
 
 /// <summary>
 /// This is the input layout that the character controller expects to be able to move
@@ -12,6 +13,7 @@ public struct CharacterControllerInputs
     Vector3 MovementVector;
 }
 
+public class OnTriggerEnterEvent : UnityEvent<BaseTrigger> { }
 
 public class CharacterController : BaseCharacterController
 {
@@ -19,6 +21,8 @@ public class CharacterController : BaseCharacterController
     public Quaternion Rotation { get; private set; }
     public Vector3 Velocity { get; private set; }
     public Vector3 MoveInputVector { get; set; }
+
+    public OnTriggerEnterEvent TriggerEnterEvent = new OnTriggerEnterEvent();
 
     [Header("Game Movement")]
     public float MaxMoveSpeedStable;
@@ -48,6 +52,15 @@ public class CharacterController : BaseCharacterController
     public override void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        BaseTrigger trigger = other.gameObject.GetComponent<BaseTrigger>();
+        if(trigger != null)
+        {
+            TriggerEnterEvent.Invoke(trigger);
+        }
     }
 
     public override void PostGroundingUpdate(float deltaTime)
