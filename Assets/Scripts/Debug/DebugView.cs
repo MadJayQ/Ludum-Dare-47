@@ -6,5 +6,5 @@ using UnityEngine;
 [SingletonTag(rootObject:"Debug Objects")]
 class DebugView : MonoSingleton<DebugView>
 {
-
+    public Dictionary<string, Vector3> Spheres;
 }
