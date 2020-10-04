@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
     private void PollInput()
     {
         input.MousePosition = Input.mousePosition;
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && windupState == PlayerCloneWindupState.WindingUp)
         {
             createCloneWindupProgress += Time.deltaTime;
         }
