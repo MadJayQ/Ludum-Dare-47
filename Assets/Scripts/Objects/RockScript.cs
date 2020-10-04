@@ -5,86 +5,7 @@ using UnityEngine.UI;
 
 public class RockScript : MonoBehaviour
 {
-    /* bool HasRock = false;
-     bool IsHolding = false;
-     MeshRenderer rockMesh = GameObject.Find("Rock1").GetComponent<MeshRenderer>();
-     BoxCollider rockCollider = GameObject.Find("Rock1").GetComponent<BoxCollider>();
-     GameObject rock = GameObject.Find("Rock1");
-     GameObject player = GameObject.Find("Player"); // get the player gameobject so we can drop the rock whereever the player is standing
-
-
-     private void Update()
-     {
-
-         if (HasRock == false) //check if the player doesn't have the rock
-         {
-
-             if (Input.GetKeyDown(KeyCode.E)) // also check if player is targeting/mouse hovering rock
-             {
-                 PickUp(); // runs the pickup
-             }
-             else 
-             {
-                 return;
-             }
-
-         }
-
-         if (HasRock == true) 
-         {
-             rockMesh.enabled = false;
-             rock.transform.position = player.transform.position;
-
-             if (Input.GetKeyDown(KeyCode.Mouse0) && IsHolding == true) 
-             {
-                 DropRock();     // DropRock is suppose to run when the player left clicks the mouse
-             }
-             else
-             {
-                 return;
-             }
-         }
-
-
-     }  
-
-     private void PickUp() // pick rock the if in range
-     {
-
-         if (HasRock == false) 
-         {
-             rock.GetComponent<Rigidbody>().useGravity = false;
-
-             HasRock = true; // sets has rock to true
-             rockMesh.enabled = false; // turn what shows the rock 
-             rockCollider.enabled = false; // set collider to be off to avoid any potential problems
-         }
-         else
-         {
-             return;
-         }
-     }
-
-     private void DropRock() // drops the rock if it's being held at the players current standing position or slightly off if wanted
-     {
-         if(HasRock == true && IsHolding == true)
-         {
-
-             rock.GetComponent<Rigidbody>().useGravity = true;
-             HasRock = false; //sets has rock to false
-             IsHolding = false; // sets is holding to false 
-             rockMesh.enabled = true; // enable this when player drops rock so it can be seen on ground
-             rockCollider.enabled = true; // enable the collider so it can interact with anything in the world
-         }
-     }
-
-     private void HoldingRock() // just going to call this when rock is placed in inventory
-     {
-
-         IsHolding = true; // sets is holding to true
-     } */
-
-
+     
     //When the mouse hovers over the GameObject, it turns to this color (red)
     Color m_MouseOverColor = Color.red;
 
@@ -94,6 +15,18 @@ public class RockScript : MonoBehaviour
     //Get the GameObject’s mesh renderer to access the GameObject’s material and color
     MeshRenderer m_Renderer;
 
+    public GameObject player; // player game object goes here
+    public GameObject rock;
+    bool overRock;
+    bool playerOnRock;
+    Transform rockPoint;
+    float rockX;
+    float rockZ;
+    bool checkX;
+    bool checkZ;
+    bool hasRock;
+
+
     void Start()
     {
         //Fetch the mesh renderer component from the GameObject
@@ -102,11 +35,48 @@ public class RockScript : MonoBehaviour
         m_OriginalColor = m_Renderer.material.color;
     }
 
+    private void Update()
+    {
+        RockMath();
+        rockPoint = this.transform;
+        rockX = rockPoint.transform.position.x;
+        rockZ = rockPoint.transform.position.z;
+
+
+        if(overRock == true && checkX == true && checkZ == true)
+        {
+            if (Input.GetKeyDown(KeyCode.E) == true)
+            {
+                hasRock = true;
+                Debug.Log("Getting the Rock man!");
+            }
+        }
+
+        if(hasRock == true)
+        {
+            rock.transform.position = player.transform.position;
+            
+            if (Input.GetKeyDown(KeyCode.Mouse0) == true)
+            {
+                hasRock = false;
+            }
+                
+        }
+        
+    }
+
+
     void OnMouseOver()
     {
         // Change the color of the GameObject to red when the mouse is over GameObject
         m_Renderer.material.color = m_MouseOverColor;
-        Debug.Log("Mouse is over GameObject.");
+        Debug.Log("Mouse is over GameObject." + gameObject.name);
+        if(gameObject.name == "Rock1" || gameObject.name == "Rock2") 
+        { 
+            overRock = true;
+            if(overRock==true)
+                Debug.Log("Over Rock should be true");
+        }
     }
 
     void OnMouseExit()
@@ -114,9 +84,38 @@ public class RockScript : MonoBehaviour
         // Reset the color of the GameObject back to normal
         m_Renderer.material.color = m_OriginalColor;
         Debug.Log("Mouse is not over a GameObject.");
+        overRock = false;
     }
 
+    void RockMath()
+    {
+        float rockMathX = rockX - player.transform.position.x;
+        float rockMathZ = rockZ - player.transform.position.z;
 
+        if(rockMathX >= -2 && rockMathX <= 2)
+        {
+            checkX = true;
+            Debug.Log("CheckX is true");
+        }
+        else
+        {
+            checkX = false;
+        }
+
+        if(rockMathZ >= -2 && rockMathZ <= 2)
+        {
+            checkZ = true;
+            Debug.Log("CheckZ is true");
+        }
+        else
+        {
+            checkX = false;
+        }
+    }
+    
+    
+
+     
 }
 
 
