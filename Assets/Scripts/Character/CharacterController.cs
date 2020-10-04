@@ -94,7 +94,7 @@ public class CharacterController : BaseCharacterController
     /// </summary>
     /// <param name="newOrigin"> Destination Absolute Rotation</param>
     /// <param name="newRotation">Destination Absolute Rotation</param>
-    public void Teleport(Vector3? newOrigin = null, Quaternion? newRotation = null)
+    public void Teleport(Vector3? newOrigin = null, Quaternion? newRotation = null, bool ignoreInterpolation = true)
     {
         if(newOrigin != null && newOrigin.HasValue)
         {
@@ -105,7 +105,7 @@ public class CharacterController : BaseCharacterController
             Rotation = newRotation.Value;
         }
 
-        Motor.SetPositionAndRotation(Origin, Rotation);
+        Motor.SetPositionAndRotation(Origin, Rotation, ignoreInterpolation);
     }
 
     public override void UpdateRotation(ref Quaternion currentRotation, float deltaTime)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[SingletonTag(rootObject: "Gameplay Objects")]
 public class GameStateProvider : MonoSingleton<GameStateProvider>
 {
     public List<BaseGameState> GameStates;
@@ -19,8 +20,10 @@ public class GameStateProvider : MonoSingleton<GameStateProvider>
 
     private void OnDoorOpen(int doorIndex)
     {
-        Debug.Assert(currentGameState < GameStates.Count);
-        GameStates[currentGameState++].enabled = false; //Deactivate our current gamestate
-        GameStates[currentGameState].enabled = true; //Enable our next gamestate
+        GameStates[currentGameState].gameObject.SetActive(false);
+        if(currentGameState < GameStates.Count)
+        {
+            GameStates[++currentGameState].gameObject.SetActive(true);
+        }
     }
 }

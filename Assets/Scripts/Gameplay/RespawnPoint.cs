@@ -6,7 +6,7 @@ public class RespawnPoint : MonoBehaviour
 {
     public void TeleportPlayerToRespawn(Player player)
     {
-        player.Controller.Teleport(transform.position, transform.rotation);
+        player.Controller.Teleport(transform.position, transform.rotation, false);
     }
 
     private void OnDrawGizmos()

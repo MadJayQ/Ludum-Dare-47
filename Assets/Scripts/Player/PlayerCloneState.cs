@@ -42,12 +42,21 @@ public class PlayerCloneState : BaseCloneState
         GameObject cloneObject = new GameObject("PlayerClone");
         cloneObject.transform.position = Origin;
         cloneObject.transform.rotation = Rotation;
+        cloneObject.layer = LayerMask.NameToLayer("Clones");
 
         MeshRenderer cloneMeshRenderer = cloneObject.AddComponent<MeshRenderer>();
         MeshFilter meshFilter = cloneObject.AddComponent<MeshFilter>();
         meshFilter.mesh = clonedMesh.mesh;
 
+        Rigidbody cloneRigidBody = cloneObject.AddComponent<Rigidbody>();
+        cloneRigidBody.isKinematic = true;
+        cloneRigidBody.useGravity = false;
+
         cloneMeshRenderer.material = playerCloneMaterial;
+
+        cloneObject.AddComponent<CapsuleCollider>();
+        cloneObject.AddComponent<CloneTrigger>(); 
+
 
         return cloneObject;
     }

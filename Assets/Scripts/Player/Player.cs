@@ -11,20 +11,34 @@ public struct PlayerInput
 
 public class PlayerInteractEvent : UnityEvent { }
 
+public enum PlayerCloneWindupState
+{
+    WindingUp = 0,
+    Casted = 1,
+    WindingDown = 2
+}
+
+
 public class Player : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private float windupDecay = 1f;
+
+    private PlayerCloneWindupState windupState = PlayerCloneWindupState.WindingUp;
+    private Coroutine windingUpRoutine;
 
     //Readonly access for the character controller for our player
     public CharacterController Controller => characterController;
 
-    public MeshFilter MeshFilter 
-    { 
-        get 
+    private float createCloneWindupProgress = 0f;
+
+    public MeshFilter MeshFilter
+    {
+        get
         {
             return Controller.GetComponent<MeshFilter>();
-        } 
+        }
     }
 
     private PlayerInput input = new PlayerInput();
@@ -49,20 +63,58 @@ public class Player : MonoBehaviour
 
         SetPlayerRotation();
         SetPlayerVelocity();
+
+        TickPlayerCreateClone();
     }
 
     private void PollInput()
     {
         input.MousePosition = Input.mousePosition;
-
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
-            CreatePlayerClone();
+            createCloneWindupProgress += Time.deltaTime;
+        }
+        else
+        {
+            createCloneWindupProgress -= windupDecay * Time.deltaTime;
         }
 
-        if(Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             PlayerInteract();
+        }
+    }
+
+    private void TickPlayerCreateClone()
+    {
+        if (createCloneWindupProgress <= 0f)
+        {
+            createCloneWindupProgress = 0f;
+        }
+        if (createCloneWindupProgress >= 1f)
+        { 
+            createCloneWindupProgress = 0f;
+            windupState = PlayerCloneWindupState.Casted;
+            AnimationSystem.Instance.PlayerCastCloneCreate();
+            //Set state to casted
+        }
+        float progress = Mathf.Clamp01(Mathf.Pow(createCloneWindupProgress, 2f));
+        switch (windupState)
+        {
+            case PlayerCloneWindupState.WindingUp:
+                AnimationSystem.Instance.PlayerCloneCreateWindup(progress);
+                break;
+            case PlayerCloneWindupState.WindingDown:
+                windupState = PlayerCloneWindupState.WindingUp;
+                break;
+            case PlayerCloneWindupState.Casted:
+                if (AnimationSystem.Instance.CastAnimationFinished)
+                {
+                    windupState = PlayerCloneWindupState.WindingDown;
+                    AnimationSystem.Instance.WindDown();
+                    CreatePlayerClone();
+                }
+                break;
         }
     }
 
@@ -109,7 +161,7 @@ public class Player : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if(drawDebugInformation)
+        if (drawDebugInformation)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(debugMouseWorldPosition, 1f);

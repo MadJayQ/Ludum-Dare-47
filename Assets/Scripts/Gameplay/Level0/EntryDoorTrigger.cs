@@ -9,7 +9,7 @@ public class EntryDoorTrigger : BaseTrigger
 
     public override void OnTriggered()
     {
-        if (entryRoomState.enabled)
+        if (entryRoomState.gameObject.activeInHierarchy)
         {
             entryRoomState.TriggerStateChanged(true);
         }
@@ -17,7 +17,7 @@ public class EntryDoorTrigger : BaseTrigger
 
     public override void TriggerDeactivated()
     {
-        if (entryRoomState.enabled)
+        if (entryRoomState.gameObject.activeInHierarchy)
         {
             entryRoomState.TriggerStateChanged(false);
         }
