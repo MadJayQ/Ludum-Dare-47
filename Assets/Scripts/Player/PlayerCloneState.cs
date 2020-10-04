@@ -21,7 +21,7 @@ public class PlayerCloneState : BaseCloneState
         Rotation = src.Controller.Rotation;
         Origin = src.Controller.Origin;
 
-        clonedMesh = src.MeshFilter;
+        clonedMesh = src.Controller.transform.Find("Mesh").GetComponent<MeshFilter>(); //EWWW
 
         if (playerCloneMaterial == null)
         {
@@ -43,6 +43,9 @@ public class PlayerCloneState : BaseCloneState
         cloneObject.transform.position = Origin;
         cloneObject.transform.rotation = Rotation;
         cloneObject.layer = LayerMask.NameToLayer("Clones");
+
+        //TEMP
+        cloneObject.transform.localScale = new Vector3(18, 18, 18); //REMOVE THIS WHEN THE MODEL IS SCALED
 
         MeshRenderer cloneMeshRenderer = cloneObject.AddComponent<MeshRenderer>();
         MeshFilter meshFilter = cloneObject.AddComponent<MeshFilter>();
