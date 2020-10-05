@@ -4905,10 +4905,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6287833952566218608}
-  - component: {fileID: 1093396816}
+  - component: {fileID: 1093396818}
+  - component: {fileID: 1216311479}
   m_Layer: 0
   m_Name: Guard
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4928,7 +4929,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1093396816
+--- !u!114 &1093396818
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4937,10 +4938,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 6402413773054763831}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d26713ff3bfe96c458e9061b365fb066, type: 3}
+  m_Script: {fileID: 11500000, guid: 17bed1ad191555742ac4ea39999b58e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunshot: {fileID: 0}
+  pathingList:
+  - {fileID: 0}
+  - {fileID: 0}
+  Enemy: {fileID: 6402413773054763831}
+  controlPath: 1
+  currentPath: 0
+  EnemySpeed: 1
+  RotationSpeed: 6
+--- !u!136 &1216311479
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6402413773054763831}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.6502546
+  m_Height: 2.2929306
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.6464653, z: 0.1502546}
 --- !u!1001 &975992145875801936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5012,6 +5034,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Flashlight
+      objectReference: {fileID: 0}
+    - target: {fileID: 6996991439626255999, guid: 987190a69defa594eb4bfdea30111b3c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Light
       objectReference: {fileID: 0}
     - target: {fileID: 6996991439636290183, guid: 987190a69defa594eb4bfdea30111b3c,
         type: 3}
@@ -5137,6 +5164,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: guard 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c52a4f839dccb224997fc7fcfaeaa34c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 1361415761222804137, guid: c52a4f839dccb224997fc7fcfaeaa34c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1361415761222804137, guid: c52a4f839dccb224997fc7fcfaeaa34c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6600203862589958465, guid: c52a4f839dccb224997fc7fcfaeaa34c,
         type: 3}

@@ -12,6 +12,7 @@ public class EnemyPath : MonoBehaviour
     Transform targetPath; // the target that the enemy is walking torwards
 
     public float EnemySpeed = 3f; // speed of the enemy
+    public float RotationSpeed = 3f;
 
     
 
@@ -69,7 +70,7 @@ public class EnemyPath : MonoBehaviour
         
 
         // rotate torwards target
-        transform.forward = Vector3.RotateTowards(transform.forward, targetPath.position - transform.position, EnemySpeed * Time.deltaTime, 0.0f);
+        transform.forward = Vector3.RotateTowards(transform.forward, targetPath.position - transform.position, RotationSpeed * Time.deltaTime, 0.0f);
 
         // move torwards the target
         transform.position = Vector3.MoveTowards(transform.position, targetPath.position, EnemySpeed * Time.deltaTime);
@@ -88,7 +89,7 @@ public class EnemyPath : MonoBehaviour
         }
 
         // rotate torwards target
-        transform.forward = Vector3.RotateTowards(transform.forward, targetPath.position - transform.position, EnemySpeed * Time.deltaTime, 0.0f);
+        transform.forward = Vector3.RotateTowards(transform.forward, targetPath.position - transform.position, RotationSpeed * Time.deltaTime, 0.0f);
 
         // move torwards the target
         transform.position = Vector3.MoveTowards(transform.position, targetPath.position, EnemySpeed * Time.deltaTime);

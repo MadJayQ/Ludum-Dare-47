@@ -21,9 +21,13 @@ public class EnemyVision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Object as entered collider" + other.gameObject.name);
-        Administrator.Instance.RespawnPlayer(); // respawn player when he is seen by guard
-        audio.PlayOneShot(gunshot);
+        Debug.Log("Object as entered enemyVison collider" + other.gameObject.name);
+        if(other.gameObject.tag == "Player") 
+        { 
+            Administrator.Instance.RespawnPlayer(); // respawn player when he is seen by guard
+            audio.PlayOneShot(gunshot);
+        }
+        
         
     }
 }

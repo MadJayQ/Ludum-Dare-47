@@ -11,6 +11,11 @@ public class BoomerangScript : MonoBehaviour
     
     public float boomerangSpeed; // speed of the boomerang
     public bool hasBoomerang; // checked to see if the player and boomerang have the same position so that the player can use it
+    GameObject enemyHit;
+    CapsuleCollider enemyCollider;
+    MeshCollider[] enemyLight;
+  
+    
     
     Animator animator;
 
@@ -65,7 +70,34 @@ public class BoomerangScript : MonoBehaviour
         if(other.gameObject.tag == "Enemy")
         {
             // put the function that stuns the enemy here
+            UnityEngine.Debug.Log("We hit an Enemy Guard and their tag is " + other.gameObject.tag);
+            enemyHit = other.gameObject;
+            enemyLight = enemyHit.GetComponentsInChildren<MeshCollider>();
+            enemyCollider = enemyHit.GetComponent<CapsuleCollider>();
+            UnityEngine.Debug.Log("enemyHit name is " + enemyHit.gameObject.name);
+            StartCoroutine(EnemyStun());   
         }
+        
+    }
+
+    IEnumerator EnemyStun()
+    {
+        enemyHit.SetActive(false);
+        enemyCollider.enabled = false;
+        enemyLight[0].enabled = false;
+        yield return new WaitForSeconds(0.5f);
+        enemyHit.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        enemyHit.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        enemyHit.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        enemyHit.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        enemyHit.SetActive(true);
+        enemyLight[0].enabled = true;
+        enemyCollider.enabled = true;
+
     }
 
 }
