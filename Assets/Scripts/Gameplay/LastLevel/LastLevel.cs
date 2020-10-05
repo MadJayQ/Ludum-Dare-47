@@ -10,18 +10,20 @@ public class LastLevel : MonoBehaviour
     public GameObject Button1;
     public GameObject Button2;
     public GameObject Button3;
+    int buttonsPressed;
     Animator DoorLeftAnim;
     Animator DoorRightAnim;
 
     private void Start()
     {
+        buttonsPressed = 0;
         DoorLeftAnim = DoorLeft.GetComponent<Animator>();
         DoorRightAnim = DoorRight.GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (playerIn == true && Input.GetKeyDown(KeyCode.E) == true)
+        if (playerIn == true && buttonsPressed >= 3 && Input.GetKeyDown(KeyCode.E) == true)
         {
             DoorLeftAnim.SetBool("OnSpot", true);
             DoorLeftAnim.SetBool("PressE", true);
@@ -43,5 +45,16 @@ public class LastLevel : MonoBehaviour
     void onTriggerExit(Collider collision)
     {
         playerIn = false;
+    }
+
+    public void ButtonDown()
+    {
+        buttonsPressed++;
+        Debug.Log("buttonsPressed = " + buttonsPressed);
+    }
+
+    public void ButtonUp()
+    {
+        buttonsPressed--;
     }
 }
