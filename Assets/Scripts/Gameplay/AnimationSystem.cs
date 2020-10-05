@@ -8,6 +8,7 @@ public class AnimationSystem : MonoSingleton<AnimationSystem>
 {
     [SerializeField] private Animator postFXAnimator;
     [SerializeField] private CinemachineImpulseSource impulseSource;
+    [SerializeField] private AudioSource audioSource;
 
     public bool CastAnimationFinished = false;
 
@@ -21,6 +22,7 @@ public class AnimationSystem : MonoSingleton<AnimationSystem>
     public void PlayerCastCloneCreate()
     {
         StartCoroutine(PlayCastCloneVFX());
+        audioSource.Play(0);
         CastAnimationFinished = false;
     }
 

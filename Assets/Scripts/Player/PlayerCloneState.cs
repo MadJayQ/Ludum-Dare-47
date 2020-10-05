@@ -20,8 +20,8 @@ public class PlayerCloneState : BaseCloneState
     {
         Rotation = src.Controller.Rotation;
         Origin = src.Controller.Origin;
-
-        clonedMesh = src.Controller.transform.Find("Mesh").GetComponent<MeshFilter>(); //EWWW
+        //MEGA HACK GARBAGE
+        clonedMesh = src.Controller.transform.Find("Object").Find("character").GetComponent<MeshFilter>(); //EWWW
 
         if (playerCloneMaterial == null)
         {
