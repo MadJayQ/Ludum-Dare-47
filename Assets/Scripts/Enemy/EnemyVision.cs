@@ -5,19 +5,25 @@ using UnityEngine;
 
 public class EnemyVision : MonoBehaviour
 {
-    public Transform target;
-    public float VisionCone; // size that the cone should be for enemy
+    [SerializeField]
+    private AudioClip gunshot;
+    AudioSource audio;
 
-    // prints "close" if the z-axis of this transform looks
-    // almost towards the target
-
-    void Update()
+    private void Start()
     {
-        Vector3 targetDir = target.position - transform.position;
-        float angle = Vector3.Angle(targetDir, transform.forward);
-        
+        audio = GetComponent<AudioSource>();
 
-        if (angle < VisionCone) // if this inspector values aren't working might need to hard code the values
-            print("Player seen"); // prints this to console when target is in "sight"
+        if(audio == null)
+        {
+            Debug.LogError("Audio is null on " + gameObject.name);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Object as entered collider" + other.gameObject.name);
+        Administrator.Instance.RespawnPlayer(); // respawn player when he is seen by guard
+        audio.PlayOneShot(gunshot);
+        
     }
 }
