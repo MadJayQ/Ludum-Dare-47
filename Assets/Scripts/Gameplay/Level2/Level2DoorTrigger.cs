@@ -20,21 +20,28 @@ public class Level2DoorTrigger : MonoBehaviour
     {
         if(playerIn == true && Input.GetKeyDown(KeyCode.E) == true)
         {
-            DoorLeftAnim.Play("openDoorLeft");
-            DoorRightAnim.Play("openDoor");
+            DoorLeftAnim.SetBool("OnSpot", true);
+            DoorLeftAnim.SetBool("PressE", true);
+            
+            DoorRightAnim.SetBool("OnSpot", true);
+            DoorRightAnim.SetBool("PressE", true);
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player")
         {
             playerIn = true;
+            Debug.Log("The State of playerIn is " + playerIn);
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    void onTriggerExit(Collider collision)
     {
         playerIn = false;
     }
+
+    
+
 }
