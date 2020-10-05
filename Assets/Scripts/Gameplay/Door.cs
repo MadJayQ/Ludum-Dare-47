@@ -15,6 +15,7 @@ public class Door : MonoBehaviour
         if(doorIndex == DoorIndex)
         {
             OpenDoor();
+            
         }
     }
 
