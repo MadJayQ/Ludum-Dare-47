@@ -93,5 +93,5 @@ public class EnemyPath : MonoBehaviour
         // move torwards the target
         transform.position = Vector3.MoveTowards(transform.position, targetPath.position, EnemySpeed * Time.deltaTime);
     }
-
+    
 }
