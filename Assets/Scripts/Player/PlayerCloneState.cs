@@ -57,7 +57,7 @@ public class PlayerCloneState : BaseCloneState
 
         cloneMeshRenderer.material = playerCloneMaterial;
 
-        cloneObject.AddComponent<CapsuleCollider>();
+        cloneObject.AddComponent<CapsuleCollider>().height = 0.13f;
         cloneObject.AddComponent<CloneTrigger>(); 
 
 
